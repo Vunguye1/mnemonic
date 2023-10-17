@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var body_parser_1 = require("body-parser");
-var express_1 = require("express");
-var app = (0, express_1.default)();
+var bodyParser = require("body-parser");
+var express = require("express");
+var app = express();
 var port = 3000;
 var accounts = [
     {
@@ -17,7 +17,7 @@ var accounts = [
     }
 ];
 var alltransactions = [];
-app.use(body_parser_1.default.json());
+app.use(bodyParser.json());
 /*
 Design and implement a REST API that able to execute transaction between
 2 bank accounts (simple model defined below), to allow money exchange
@@ -68,50 +68,6 @@ app.get('/bank/transactions', function (req, res) {
 app.listen(port, function () {
     console.log("Server is running on port ".concat(port));
 });
-/*
-Design and implement a REST API that able to execute transaction between
-2 bank accounts (simple model defined below), to allow money exchange
-between them.
-let moneyExchange = function (srcAccount: Account, desAccount: Account, cashAmount: number, timeRegister: Date): string {
-
-    
-
-     Negative cash balance on bank account is not allowed when executing, and the request should be rejected
-            with response of 400 and a reason text at least.
-    
-    if (srcAccount.availableCash <= 0) {
-        return "400! Your blance is not enough to execute this transaction";
-    }
-
-    else if (srcAccount.availableCash < cashAmount) {
-        // send o JSON.text saying "Your balance is not enough to execute this transaction"
-        return "400! There is not enough money in your account for doing this transaction"
-    }
-
-    else {
-         Successful execution of request should response with 200 and include the
-            executed transaction model within response body
-            var currTransaction: Transaction = {
-                id: Math.floor(Math.random() * 10000),
-                registeredTime: Number(timeRegister), // convert date object to epoch
-                executedTime: Number(new Date()), // get the current time when transaction is executed
-                success: true,
-                cashAmount: cashAmount,
-                sourceAccount: srcAccount,
-                destinationAccount: desAccount
-            }
-
-            srcAccount.availableCash -= cashAmount
-            desAccount.availableCash += cashAmount
-
-            // The bank accounts and transactions should be stored, you may choose what storage solution it might be (DB/file/etc.)
-
-        return "200! Your transaction has been executed successfully";
-        
-    }
-
-}
-*/
 //Consider structure of REST API url, in case you want to add more APIs for account/transaction management, or make change in future.
 /* How to test the logic and API according to the requirements?
     - Write unit tests for transactions execution logic, input validating and database operations
