@@ -25,8 +25,6 @@ between them.*/
 app.post('/bank/transactions', function (req, res) {
     var _a = req.body, srcAccountId = _a.srcAccountId, desAccountId = _a.desAccountId, cashAmount = _a.cashAmount, timeRegister = _a.timeRegister;
     // Check if these accounts exist
-    console.log('Received srcAccountId:', srcAccountId);
-    console.log('Received desAccountId:', desAccountId);
     console.log('Accounts:', accounts);
     if (accounts[srcAccountId] == null || accounts[desAccountId] == null) {
         res.status(400).json({
