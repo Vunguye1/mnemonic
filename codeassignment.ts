@@ -23,6 +23,7 @@ interface Transaction {
 }
 
 
+
 const accounts: Account[] = [ // Hard coding two accounts
     {
         id: 1,
@@ -52,6 +53,10 @@ app.post('/bank/transactions', (req: any, res: any) => {
 
 
     // Check if these accounts exist
+    console.log('Received srcAccountId:', srcAccountId);
+    console.log('Received desAccountId:', desAccountId);
+    console.log('Accounts:', accounts);
+
 
     if (accounts[srcAccountId] == null || accounts[desAccountId] == null) {
         res.status(400).json({
