@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var bodyParser = require("body-parser");
-var express = require("express");
-var app = express();
-var port = 5005;
-var accounts = [
+const bodyParser = require("body-parser");
+const express = require("express");
+const app = express();
+const port = 5005;
+const accounts = [
     {
         id: 1,
         name: "Joel Oslo",
@@ -16,14 +16,14 @@ var accounts = [
         availableCash: 3000
     }
 ];
-var alltransactions = [];
+const alltransactions = [];
 app.use(bodyParser.json());
 /*
 Design and implement a REST API that able to execute transaction between
 2 bank accounts (simple model defined below), to allow money exchange
 between them.*/
-app.post('/bank/transactions', function (req, res) {
-    var _a = req.body, srcAccountId = _a.srcAccountId, desAccountId = _a.desAccountId, cashAmount = _a.cashAmount, timeRegister = _a.timeRegister;
+app.post('/bank/transactions', (req, res) => {
+    const { srcAccountId, desAccountId, cashAmount, timeRegister } = req.body;
     // Check if these accounts exist
     if (accounts[srcAccountId] == null || accounts[desAccountId] == null) {
         res.status(400).json({
@@ -47,12 +47,12 @@ app.post('/bank/transactions', function (req, res) {
     // if all the tests pass --> execute transactions
     accounts[srcAccountId].availableCash -= cashAmount;
     accounts[desAccountId].availableCash += cashAmount;
-    var succesfulTransaction = {
+    const succesfulTransaction = {
         id: Math.floor(Math.random() * 10000),
         registeredTime: Number(timeRegister),
         executedTime: Number(new Date()),
         success: true,
-        cashAmount: cashAmount,
+        cashAmount,
         sourceAccount: accounts[srcAccountId],
         destinationAccount: accounts[desAccountId]
     };
@@ -62,11 +62,11 @@ app.post('/bank/transactions', function (req, res) {
     res.status(200).json(succesfulTransaction);
 });
 // List all transactions
-app.get('/bank/transactions', function (req, res) {
+app.get('/bank/transactions', (req, res) => {
     res.status(200).json(alltransactions);
 });
-app.listen(port, function () {
-    console.log("Server is running on port ".concat(port));
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
 //Consider structure of REST API url, in case you want to add more APIs for account/transaction management, or make change in future.
 /* How to test the logic and API according to the requirements?
