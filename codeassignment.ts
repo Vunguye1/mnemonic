@@ -48,7 +48,7 @@ Design and implement a REST API that able to execute transaction between
 2 bank accounts (simple model defined below), to allow money exchange 
 between them.*/
 
-app.post('/bank/transactions', (req: any, res: any) => {
+app.post('/bank/transactions', async (req: any, res: any) => {
     const { srcAccountId, desAccountId, cashAmount, timeRegister} = req.body
 
 
@@ -81,6 +81,14 @@ app.post('/bank/transactions', (req: any, res: any) => {
 
     // if all the tests pass --> execute transactions
 
+    const currTransaction: Transaction = await PerformTransaction(srcAccountId, desAccountId, cashAmount, timeRegister)
+
+    /* Successful execution of request should response with 200 and include the 
+            executed transaction model within response body */
+    res.status(200).json(currTransaction)
+})
+
+async function PerformTransaction(srcAccountId: number, desAccountId: number, cashAmount: number, timeRegister:Date) {
     accounts[srcAccountId].availableCash -= cashAmount
     accounts[desAccountId].availableCash += cashAmount
 
@@ -94,12 +102,11 @@ app.post('/bank/transactions', (req: any, res: any) => {
         destinationAccount: accounts[desAccountId]
     }
 
-    alltransactions.push(succesfulTransaction)
+    alltransactions.push(succesfulTransaction) // push to our transaction list to list all executed transactions
 
-    /* Successful execution of request should response with 200 and include the 
-            executed transaction model within response body */
-    res.status(200).json(succesfulTransaction)
-})
+    return succesfulTransaction;
+}
+
 
 
 // List all transactions
@@ -109,12 +116,9 @@ app.get('/bank/transactions', (req: any, res: any) => {
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-  });
+});
 
 
-
-
-//Consider structure of REST API url, in case you want to add more APIs for account/transaction management, or make change in future.
 
 
 /* How to test the logic and API according to the requirements?
@@ -131,5 +135,5 @@ app.listen(port, () => {
         - Rollbacks: Implement transaction rollbacks in case of failures to maintain data integrity.
         - Authorization and authentication: Add security layers to ensure only authorized users can perform transactions.
         - Scalability: handling large number of transactions and accounts.
-        - Perfomance (ytelse): optimize database query. use cache when needed to improve service perfomance
+        - Perfomance (ytelse): optimize database query. Use cache when needed to improve service perfomance.
 */      
